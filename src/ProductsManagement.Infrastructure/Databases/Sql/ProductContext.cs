@@ -12,7 +12,7 @@ public class ProductContext : DbContext
 
     public DbSet<Product> Products { get; set; }
     
-    public ProductContext(DbContextOptions options) : base(options) { }
+    // public ProductContext(DbContextOptions options) : base(options) { }
     
     public ProductContext(IOptions<SqlOption> sqlOption)
     {
