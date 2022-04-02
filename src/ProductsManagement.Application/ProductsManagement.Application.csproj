@@ -10,4 +10,13 @@
     <ProjectReference Include="..\ProductsManagement.Domain\ProductsManagement.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="10.4.0" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Configurations\Validations" />
+  </ItemGroup>
+
 </Project>
