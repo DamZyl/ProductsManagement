@@ -16,6 +16,7 @@ public class Product
 
     private Product(string name, int number, int quantity, string description, decimal price)
     {
+        // REFACTOR!!!
         Id = Guid.NewGuid();
         SetName(name);
         SetNumber(number);
@@ -26,6 +27,12 @@ public class Product
 
     public static Product Create(string name, int number, int quantity, string description, decimal price) =>
         new(name, number, quantity, description, price);
+
+    public void UpdateProduct(string description, int quantity)
+    {
+        SetDescription(description);
+        SetQuantity(quantity);
+    }
 
     #region Setters
 

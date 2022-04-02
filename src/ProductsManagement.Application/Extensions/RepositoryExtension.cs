@@ -1,7 +1,7 @@
 using ProductsManagement.Domain.Products;
 using ProductsManagement.Domain.Repositories;
 
-namespace ProductsManagement.Infrastructure.Extensions;
+namespace ProductsManagement.Application.Extensions;
 
 public static class RepositoryExtension
 {
