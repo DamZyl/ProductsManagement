@@ -1,9 +1,25 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Hellang.Middleware.ProblemDetails;
+using ProductsManagement.Api.Configurations.Validations;
+using ProductsManagement.Application.Configurations.Validations;
+using ProductsManagement.Domain.Exceptions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(builder =>
+    {
+        // builder.RegisterModule();
+    });
+
+builder.Services.AddProblemDetails(x =>
+{
+    x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
+    x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
+});
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
