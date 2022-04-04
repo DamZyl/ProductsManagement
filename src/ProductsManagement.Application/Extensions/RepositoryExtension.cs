@@ -10,7 +10,7 @@ public static class RepositoryExtension
     public static async Task<Product> GetOrFailByIdAsync(this IProductRepository repository, Guid id)
     {
         var product = await repository.GetByIdAsync(id);
-        ExceptionHelper.CheckRule(new ProductDoesNotExist(product));
+        ExceptionHelper.CheckRule(new ProductDoesNotExist(id, product));
 
         return product;
     }
