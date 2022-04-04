@@ -4,6 +4,7 @@ using Hellang.Middleware.ProblemDetails;
 using Microsoft.EntityFrameworkCore;
 using ProductsManagement.Api.Configurations.Extensions;
 using ProductsManagement.Api.Configurations.Validations;
+using ProductsManagement.Application.Configurations.Mappers;
 using ProductsManagement.Application.Configurations.Validations;
 using ProductsManagement.Domain.Exceptions;
 using ProductsManagement.Infrastructure.Databases.Sql;
@@ -20,7 +21,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 
 builder.Services.ConfigureOption<SqlOption>(builder.Configuration, "Sql");
 builder.Services.AddDbContext<ProductContext>();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddProblemDetails(x =>
 {
     x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
