@@ -12,8 +12,8 @@ using ProductsManagement.Infrastructure.Databases.Sql;
 namespace ProductsManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20220402172542_Initial")]
-    partial class Initial
+    [Migration("20220405153621_Initial_Migration")]
+    partial class Initial_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,7 +31,6 @@ namespace ProductsManagement.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 

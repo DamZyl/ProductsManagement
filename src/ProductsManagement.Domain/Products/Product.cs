@@ -44,23 +44,23 @@ public class Product
     
     private void SetQuantity(int quantity)
     {
-        ExceptionHelper.CheckRule(new LessThanZeroRule<int>(quantity, nameof(Quantity)));
-        
         if (Quantity == quantity)
         {
             return;
         }
+        
+        ExceptionHelper.CheckRule(new LessThanZeroRule<int>(quantity, nameof(Quantity)));
         Quantity = quantity;
     }
     
     private void SetDescription(string description)
     {
-        ExceptionHelper.CheckRule(new LengthRule(description, nameof(Description), 200));
-
-        if (string.IsNullOrWhiteSpace(Description) || Description == description)
+        if (string.IsNullOrWhiteSpace(description) || Description == description)
         {
             return;
         }
+        
+        ExceptionHelper.CheckRule(new LengthRule(description, nameof(Description), 200));
         Description = description;
     }
 
