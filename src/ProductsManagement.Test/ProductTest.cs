@@ -1,6 +1,7 @@
 using FluentAssertions;
 using ProductsManagement.Domain.Exceptions;
 using ProductsManagement.Domain.Products;
+using ProductsManagement.Test.Helpers;
 using Xunit;
 
 namespace ProductsManagement.Test;
@@ -11,14 +12,10 @@ public class ProductTest
     public void Create_Product_Set_Product_Name_Null_Value()
     {
         // Arrange
-        string productName = null;
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
+        string name = null;
         
         // Act
-        var act = () => Product.Create(productName, number, quantity, description, price);
+        var act = () => Product.Create(name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Assert
         act.Should()
@@ -30,14 +27,10 @@ public class ProductTest
     public void Create_Product_Set_Product_Name_Whitespace()
     {
         // Arrange
-        var productName = "";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
+        var name = "";
         
         // Act
-        var act = () => Product.Create(productName, number, quantity, description, price);
+        var act = () => Product.Create(name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Assert
         act.Should()
@@ -49,34 +42,25 @@ public class ProductTest
     public void Create_Product_Set_Product_Name_Longer_Than_100()
     {
         // Arrange
-        var productName = $"hNIfG8Z8pgJ2SLV5kjmZZU1xgMKXPJbHDefCUPIqNvCyL8vkMSHWRD54RMH69Of8gfWKpSFHURy5D" + 
+        var name = $"hNIfG8Z8pgJ2SLV5kjmZZU1xgMKXPJbHDefCUPIqNvCyL8vkMSHWRD54RMH69Of8gfWKpSFHURy5D" + 
                                    $"4QwnJjTA5wlQaBSpkicfT721aDVbBZvH3gkPAL6XCrFy5lJ7TqtgCMMJS5bgkEYyQ52JrOYIQBNGbdn5bNo";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
-        
+
         // Act
-        var act = () => Product.Create(productName, number, quantity, description, price);
+        var act = () => Product.Create(name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Assert
         act.Should()
             .Throw<BusinessRuleValidationException>()
-            .WithMessage($"Name length: { productName.Length } so is longer than 100.");
+            .WithMessage($"Name length: { name.Length } so is longer than 100.");
     }
     
     [Fact]
     public void Create_Product_Set_Product_Name_Shorter_Than_100()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
         
         // Act
-        var act = () => Product.Create(productName, number, quantity, description, price);
+        var act = () => Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Assert
         act.Should()
@@ -87,14 +71,10 @@ public class ProductTest
     public void Create_Product_Set_Product_Price_Less_Than_0()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
         var price = -1M;
         
         // Act
-        var act = () => Product.Create(productName, number, quantity, description, price);
+        var act = () => Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, price);
         
         // Assert
         act.Should()
@@ -106,14 +86,10 @@ public class ProductTest
     public void Create_Product_Set_Product_Price_Equals_0()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
         var price = 0M;
         
         // Act
-        var act = () => Product.Create(productName, number, quantity, description, price);
+        var act = () => Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, price);
         
         // Assert
         act.Should()
@@ -125,15 +101,11 @@ public class ProductTest
     public void Update_Product_Set_Product_Quantity_Greater_Than_0()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
-        var product = Product.Create(productName, number, quantity, description, price);
+        var newQuantity = 20;
+        var product = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Act
-        var act = () => product.UpdateProduct("", 20);
+        var act = () => product.UpdateProduct("", newQuantity);
         
         // Assert
         act.Should()
@@ -144,15 +116,11 @@ public class ProductTest
     public void Update_Product_Set_Product_Quantity_Equals_0()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
-        var product = Product.Create(productName, number, quantity, description, price);
+        var newQquantity = 0;
+        var product = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Act
-        var act = () => product.UpdateProduct("", 0);
+        var act = () => product.UpdateProduct("", newQquantity);
         
         // Assert
         act.Should()
@@ -163,15 +131,11 @@ public class ProductTest
     public void Update_Product_Set_Product_Quantity_Less_Than_0()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
-        var product = Product.Create(productName, number, quantity, description, price);
+        var newQuantity = -1;
+        var product = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Act
-        var act = () => product.UpdateProduct("", -1);
+        var act = () => product.UpdateProduct("", newQuantity);
         
         // Assert
         act.Should()
@@ -183,15 +147,10 @@ public class ProductTest
     public void Update_Product_Set_Product_Quantity_Same_Value()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
-        var product = Product.Create(productName, number, quantity, description, price);
+        var product = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Act
-        var act = () => product.UpdateProduct("", quantity);
+        var act = () => product.UpdateProduct("", ProductHelper.Quantity);
         
         // Assert
         act.Should()
@@ -202,15 +161,11 @@ public class ProductTest
     public void Update_Product_Set_Product_Description_Null_Value()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
-        var product = Product.Create(productName, number, quantity, description, price);
+        string newDescription = null;
+        var product = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Act
-        var act = () => product.UpdateProduct(null, quantity);
+        var act = () => product.UpdateProduct(newDescription, ProductHelper.Quantity);
         
         // Assert
         act.Should()
@@ -221,15 +176,11 @@ public class ProductTest
     public void Update_Product_Set_Product_Description_Whitespace()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
-        var product = Product.Create(productName, number, quantity, description, price);
+        var newDescription = "";
+        var product = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Act
-        var act = () => product.UpdateProduct("", quantity);
+        var act = () => product.UpdateProduct(newDescription, ProductHelper.Quantity);
         
         // Assert
         act.Should()
@@ -240,15 +191,10 @@ public class ProductTest
     public void Update_Product_Set_Product_Description_Same_Value()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
-        var product = Product.Create(productName, number, quantity, description, price);
+        var product = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Act
-        var act = () => product.UpdateProduct(description, quantity);
+        var act = () => product.UpdateProduct(ProductHelper.Description, ProductHelper.Quantity);
         
         // Assert
         act.Should()
@@ -259,15 +205,11 @@ public class ProductTest
     public void Update_Product_Set_Product_Description_Less_Than_200()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
-        var product = Product.Create(productName, number, quantity, description, price);
+        var newDescription = "Opis2";
+        var product = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Act
-        var act = () => product.UpdateProduct("Opis2", quantity);
+        var act = () => product.UpdateProduct(newDescription, ProductHelper.Quantity);
         
         // Assert
         act.Should()
@@ -278,18 +220,13 @@ public class ProductTest
     public void Update_Product_Set_Product_Description_Greater_Than_200()
     {
         // Arrange
-        var productName = "Nazwa";
-        var number = 1;
-        var quantity = 10;
-        var description = "Opis";
-        var price = 20.0M;
-        var product = Product.Create(productName, number, quantity, description, price);
         var newDescription = $"f3bL8hVYzORvGSAtbcdQZcSB26or65fknYeZnrlaKnayUAQzojkOkpnNi6VZEddJCI5r" + 
                              $"tzl83fEmJ7khO104NZEYXUcEUX1Kme6vmaxcoO97CVrSq5PdF07QR7FbKddwCXtwVnL2XpJ2m" + 
                              $"993FniMxsfjrpoXNCe9NiFf9xeh6YcTiXuKhXpz2DgI7r7lrYYkJrb1E3mjTJnAuLu5bEVszmCBJI80";
+        var product = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
         
         // Act
-        var act = () => product.UpdateProduct(newDescription, quantity);
+        var act = () => product.UpdateProduct(newDescription, ProductHelper.Quantity);
         
         // Assert
         act.Should()
