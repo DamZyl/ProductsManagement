@@ -13,5 +13,5 @@ public class GreaterThanZeroRule<T> : IBusinessRule where T : struct
 
     public bool IsBroken() => (dynamic)_property <= 0;
 
-    public string Message => $"{ _propertyName } is less or equal than 0";
+    public string Message => $"{ _propertyName } is less or equal than 0.";
 }
