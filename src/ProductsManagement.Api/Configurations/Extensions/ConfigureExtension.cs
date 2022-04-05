@@ -1,7 +1,22 @@
+using Microsoft.EntityFrameworkCore;
+using ProductsManagement.Infrastructure.Databases.Sql;
+
 namespace ProductsManagement.Api.Configurations.Extensions;
 
-public static class ConfigureServiceExtension
+public static class ConfigureExtension
 {
-    public static void ConfigureOption<T>(this IServiceCollection services, IConfiguration configuration, string section) where T : class
-        => services.Configure<T>(x => configuration.GetSection(section).Bind(x));
+    public static async Task ApplyMigrations(this IApplicationBuilder app, IServiceProvider service)
+    {
+        await using var scope = service.CreateAsyncScope();
+        await using var context = scope.ServiceProvider.GetService<ProductContext>();
+        if (context != null)
+        {
+            Console.WriteLine("Applying Migration...");
+            foreach (var item in context.Database.GetMigrations())
+            {
+                Console.WriteLine(item);
+            }
+            await context.Database.MigrateAsync();
+        }
+    }
 }
