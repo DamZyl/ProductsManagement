@@ -1,26 +1,22 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Hellang.Middleware.ProblemDetails;
-using Microsoft.EntityFrameworkCore;
 using ProductsManagement.Api.Configurations.Extensions;
 using ProductsManagement.Api.Configurations.Validations;
+using ProductsManagement.Application.Configurations.Mappers;
 using ProductsManagement.Application.Configurations.Validations;
 using ProductsManagement.Domain.Exceptions;
-using ProductsManagement.Infrastructure.Databases.Sql;
 using ProductsManagement.Infrastructure.IoC;
-using ProductsManagement.Infrastructure.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-    .ConfigureContainer<ContainerBuilder>(x =>
+    .ConfigureContainer<ContainerBuilder>(containerBuilder =>
     {
-        x.RegisterModule(new InfrastructureModule());
+        containerBuilder.RegisterModule(new InfrastructureModule(builder.Configuration));
     });
 
-builder.Services.ConfigureOption<SqlOption>(builder.Configuration, "Sql");
-builder.Services.AddDbContext<ProductContext>();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddProblemDetails(x =>
 {
     x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
@@ -32,22 +28,16 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseProblemDetails();
+    await app.ApplyMigrations(app.Services);
 }
 
-await using var scope = app.Services.CreateAsyncScope();
-await using var context = scope.ServiceProvider.GetService<ProductContext>();
-if (context != null) await context.Database.MigrateAsync();
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

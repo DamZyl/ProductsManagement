@@ -16,13 +16,12 @@ public class Product
 
     private Product(string name, int number, int quantity, string description, decimal price)
     {
-        // REFACTOR!!!
         Id = Guid.NewGuid();
         SetName(name);
-        SetNumber(number);
-        SetQuantity(quantity);
-        SetDescription(description);
         SetPrice(price);
+        Number = number;
+        Quantity = quantity;
+        Description = description;
     }
 
     public static Product Create(string name, int number, int quantity, string description, decimal price) =>
@@ -34,37 +33,54 @@ public class Product
         SetQuantity(quantity);
     }
 
+    public override bool Equals(object? obj)
+    {
+        if (obj is not Product product)
+        {
+            return false;
+        }
+
+        return Id.Equals(product.Id) 
+               && Name.Equals(product.Name) 
+               && Number.Equals(product.Number);
+    }
+    
+    public override int GetHashCode() =>  HashCode.Combine(Id, Name, Number);
+    
     #region Setters
 
     private void SetName(string name)
     {
-        ExceptionHelper.CheckRule(new NullOrWhiteSpaceRule(name));
-        ExceptionHelper.CheckRule(new LengthRule(name, 100));
+        ExceptionHelper.CheckRule(new NullOrWhiteSpaceRule(name, nameof(Name)));
+        ExceptionHelper.CheckRule(new LengthRule(name, nameof(Name), 100));
         Name = name;
-    }
-
-    private void SetNumber(int number)
-    {
-        ExceptionHelper.CheckRule(new GreaterThanZeroRule<int>(number));
-        Number = number;
     }
     
     private void SetQuantity(int quantity)
     {
-        ExceptionHelper.CheckRule(new GreaterThanZeroRule<int>(quantity));
+        if (Quantity == quantity)
+        {
+            return;
+        }
+        
+        ExceptionHelper.CheckRule(new LessThanZeroRule<int>(quantity, nameof(Quantity)));
         Quantity = quantity;
     }
     
     private void SetDescription(string description)
     {
-        ExceptionHelper.CheckRule(new NullOrWhiteSpaceRule(description));
-        ExceptionHelper.CheckRule(new LengthRule(description, 200));
+        if (string.IsNullOrWhiteSpace(description) || Description == description)
+        {
+            return;
+        }
+        
+        ExceptionHelper.CheckRule(new LengthRule(description, nameof(Description), 200));
         Description = description;
     }
 
     private void SetPrice(decimal price)
     {
-        ExceptionHelper.CheckRule(new GreaterThanZeroRule<decimal>(price));
+        ExceptionHelper.CheckRule(new GreaterThanZeroRule<decimal>(price, nameof(Price)));
         Price = price;
     }
 
