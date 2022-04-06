@@ -8,6 +8,6 @@ public class UpdateProductCommandValidator : AbstractValidator<UpdateProductComm
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("ProductId is required");
+            .WithMessage("ProductId is required.");
     }
 }

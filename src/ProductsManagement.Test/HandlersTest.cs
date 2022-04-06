@@ -21,7 +21,7 @@ namespace ProductsManagement.Test;
 public class HandlersTest
 {
     [Fact]
-    public async Task Get_Product_Query_Handler_With_Validate_Result()
+    public async Task Get_Product_Query_Handler_With_Correct_Result()
     {
         //Arrange
         var fixture = new Fixture().Customize(new AutoMoqCustomization());
@@ -41,7 +41,7 @@ public class HandlersTest
     }
     
     [Fact]
-    public async Task Get_Products_Query_Handler_With_Validate_Result()
+    public async Task Get_Products_Query_Handler_With_Correct_Result()
     {
         //Arrange
         var fixture = new Fixture().Customize(new AutoMoqCustomization());
@@ -61,7 +61,7 @@ public class HandlersTest
     }
     
     [Fact]
-    public async Task Create_Product_Command_Handler_With_Validate_Result()
+    public async Task Create_Product_Command_Handler_With_Correct_Result()
     {
         //Arrange
         var fixture = new Fixture().Customize(new AutoMoqCustomization());
@@ -80,7 +80,7 @@ public class HandlersTest
     }
     
     [Fact]
-    public async Task Update_Product_Command_Handler_With_Validate_Result()
+    public async Task Update_Product_Command_Handler_With_Correct_Result()
     {
         //Arrange
         var fixture = new Fixture().Customize(new AutoMoqCustomization());
@@ -101,7 +101,7 @@ public class HandlersTest
     }
     
     [Fact]
-    public async Task Delete_Product_Command_Handler_With_Validate_Result()
+    public async Task Delete_Product_Command_Handler_With_Correct_Result()
     {
         //Arrange
         var fixture = new Fixture().Customize(new AutoMoqCustomization());

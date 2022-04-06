@@ -3,6 +3,7 @@ using FluentAssertions;
 using FluentValidation.TestHelper;
 using ProductsManagement.Api.Products.Requests;
 using ProductsManagement.Application.Products.Commands.CreateProduct;
+using ProductsManagement.Application.Products.Commands.DeleteProduct;
 using ProductsManagement.Application.Products.Commands.UpdateProduct;
 using ProductsManagement.Test.Helpers;
 using Xunit;
@@ -149,27 +150,51 @@ public class ValidatorsTest
         result.ShouldNotHaveValidationErrorFor(c => c);
     }
     
-    // [Fact]
-    // public void Update_Product_Validator_Without_Id_Return_Error()
-    // {
-    //     // Arrange
-    //     var request = new CreateProductRequest
-    //     {
-    //         Name = null,
-    //         Number = ProductHelper.Number,
-    //         Quantity = ProductHelper.Quantity,
-    //         Description = ProductHelper.Description,
-    //         Price = ProductHelper.Price
-    //     };
-    //     var command = new CreateProductCommand(request.Name, request.Number, request.Quantity, 
-    //         request.Description,request.Price);
-    //     var validator = new CreateProductCommandValidator();
-    //
-    //     // Act
-    //     var result = validator.TestValidate(command);
-    //     
-    //     // Assert
-    //     result.ShouldHaveValidationErrorFor(x => x.Name)
-    //         .WithErrorMessage("Name is required.");
-    // }
+    [Fact]
+    public void Update_Product_Validator_Without_Id_Return_Error()
+    {
+        var request = new UpdateProductRequest
+        {
+            Description = ProductHelper.Description,
+            Quantity = ProductHelper.Quantity
+        };
+        var command = new UpdateProductCommand(Guid.Empty, request.Description, request.Quantity);
+        var validator = new UpdateProductCommandValidator();
+
+        // Act
+        var result = validator.TestValidate(command);
+        
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.Id)
+            .WithErrorMessage("ProductId is required.");
+    }
+    
+    [Fact]
+    public void Delete_Product_Validator_With_Correct_Data()
+    {
+        // Arrange
+        var command = new DeleteProductCommand(Guid.NewGuid());
+        var validator = new DeleteProductCommandValidator();
+
+        // Act
+        var result = validator.TestValidate(command);
+        
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(c => c);
+    }
+    
+    [Fact]
+    public void Delete_Product_Validator_Without_Id_Return_Error()
+    {
+        // Arrange
+        var command = new DeleteProductCommand(Guid.Empty);
+        var validator = new DeleteProductCommandValidator();
+
+        // Act
+        var result = validator.TestValidate(command);
+        
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.Id)
+            .WithErrorMessage("ProductId is required.");
+    }
 }
