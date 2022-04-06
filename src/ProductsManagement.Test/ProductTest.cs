@@ -9,6 +9,22 @@ namespace ProductsManagement.Test;
 public class ProductTest
 {
     [Fact]
+    public void Create_Product_With_Validate_Result()
+    {
+        // Arrange
+        Product product = null;
+
+        // Act
+        product = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
+        
+        // Assert
+        product.Should()
+            .NotBeNull()
+            .And
+            .BeAssignableTo<Product>();
+    }
+
+    [Fact]
     public void Create_Product_Set_Product_Name_Null_Value()
     {
         // Arrange
@@ -95,6 +111,29 @@ public class ProductTest
         act.Should()
             .Throw<BusinessRuleValidationException>()
             .WithMessage("Price is less or equal than 0.");
+    }
+    
+    [Fact]
+    public void Equals_Between_Products()
+    {
+        // Arrange
+        Product product = null;
+        Product productToCompare = null;
+        var newDescription = "Opis2";
+        var newQuantity = 20;
+
+        // Act
+        product = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, ProductHelper.Description, ProductHelper.Price);
+        productToCompare = product;
+        productToCompare.UpdateProduct(newDescription, newQuantity);
+        
+        // Assert
+        product.Should()
+            .NotBeNull()
+            .And
+            .BeAssignableTo<Product>()
+            .And
+            .BeEquivalentTo(productToCompare);
     }
     
     [Fact]

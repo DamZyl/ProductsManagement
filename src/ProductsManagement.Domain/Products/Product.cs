@@ -33,6 +33,20 @@ public class Product
         SetQuantity(quantity);
     }
 
+    public override bool Equals(object? obj)
+    {
+        if (obj is not Product product)
+        {
+            return false;
+        }
+
+        return Id.Equals(product.Id) 
+               && Name.Equals(product.Name) 
+               && Number.Equals(product.Number);
+    }
+    
+    public override int GetHashCode() =>  HashCode.Combine(Id, Name, Number);
+    
     #region Setters
 
     private void SetName(string name)
