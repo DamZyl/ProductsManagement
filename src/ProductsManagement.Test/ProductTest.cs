@@ -9,7 +9,7 @@ namespace ProductsManagement.Test;
 public class ProductTest
 {
     [Fact]
-    public void Create_Product_With_Validate_Result()
+    public void Create_Product_With_Correct_Result()
     {
         // Arrange
         Product product = null;

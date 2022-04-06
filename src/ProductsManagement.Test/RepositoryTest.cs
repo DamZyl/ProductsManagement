@@ -68,13 +68,11 @@ public class RepositoryTest
         products.Should()
             .NotBeNullOrEmpty()
             .And
-            .HaveCount(1)
-            .And
             .BeAssignableTo<IEnumerable<Product>>();
     }
     
     [Fact]
-    public async Task Create_Product_Validate_Data()
+    public async Task Create_Product_With_Correct_Data()
     {
         // Arrange
         var mockProduct = Product.Create(ProductHelper.Name, ProductHelper.Number, ProductHelper.Quantity, 
@@ -90,7 +88,7 @@ public class RepositoryTest
     }
     
     [Fact]
-    public async Task Update_Product_Validate_Data()
+    public async Task Update_Product_With_Correct_Data()
     {
         // Arrange
         var productRepository = new ProductRepository(_context);
@@ -111,7 +109,7 @@ public class RepositoryTest
     }
     
     [Fact]
-    public async Task Delete_Product_Validate_Data()
+    public async Task Delete_Product_With_Correct_Data()
     {
         // Arrange
         var productRepository = new ProductRepository(_context);
