@@ -19,6 +19,6 @@ public class GetProductsQueryHandler : IQueryHandler<GetProductsQuery, IEnumerab
     {
         var products = await _productRepository.GetAllAsync();
 
-        return _mapper.Map<IEnumerable<ProductViewModel>>(products); // Refactor ProjectTo
+        return _mapper.Map<IEnumerable<ProductViewModel>>(products);
     }
 }
