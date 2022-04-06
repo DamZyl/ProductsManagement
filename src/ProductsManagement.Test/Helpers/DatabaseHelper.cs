@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProductsManagement.Domain.Products;
 using ProductsManagement.Infrastructure.Databases.Sql;

@@ -1,5 +1,4 @@
 using System;
-using FluentAssertions;
 using FluentValidation.TestHelper;
 using ProductsManagement.Api.Products.Requests;
 using ProductsManagement.Application.Products.Commands.CreateProduct;
